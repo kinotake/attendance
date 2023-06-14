@@ -5,32 +5,61 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Rest;
 use App\Http\Requests\RestRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Work;
+
 
 class RestController extends Controller
 {
 
-    public function  restStartView()
-       {
-          return view('reststart');
-       }
+    public function  restStart(RestRequest $request){
+      $who=Work::worker()->id;
+      // ユーザーネームの取得
+      $item = Work::worker();
+      
+      //  すでに休憩に入っているか確かめる 
+      // 休憩に入っていた場合
+      if(Rest::where('work_id',$who)->exists() && Rest::where('work_id',$who)->latest()->first()->rest_end===null){
+               $message="既に休憩に入っています。";
+               
 
-    public function  restStart(RestRequest $request)
-       {
-        $form = $request->all();
-        Rest::create($form);
-        return redirect('/rest/end');
-       } 
+               return view('restend',compact('message','item'));
+           }
+      else {
+         $data = Work::worker();
+         $rest = new Rest();
+         $rest->work_id=$data->id;
+         $rest->rest_end=null;
+         $rest->rest_start=now()->format('Y-m-d H:i:s');
+         $rest->save();
+
+      return view('restend',compact('item'));
+           }
        
-    public function  restEndView()
-       {
-          return view('restend');
-       }
+       } 
+
+       
+    
        
     public function  restEnd(RestRequest $request)
        {
-        $form = $request->all();
-        Rest::update($form);
-        return redirect('/rest/end');
+         // workレコードの入手
+          $item = Work::worker();
+         //  workテーブルからidを取り出す
+          $person = $item->id;
+
+         if(Rest::where('work_id',$person)->latest()->first()->rest_end===null){
+         //  Restテーブルでidが合致するものの取得
+          Rest::where('work_id',$person)->latest()->update([
+         'rest_end'=>now(),
+          ]);
+          return view('reststart',compact('item'));
+         }
+         else{
+          $message="休憩終了処理は既にされています。";
+          return view('reststart',compact('message','item'));
+         }
+      
        } 
 
 }

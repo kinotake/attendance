@@ -7,10 +7,12 @@ use App\Http\Controllers\RestController;
 
 Route::get('/', [WorkController::class, 'view']);
 Route::post('/', [WorkController::class, 'start']);
-Route::get('/rest/start', [RestController::class, 'restStartView']);
+Route::get('/end', [WorkController::class, 'endView']);
+Route::post('/end', [WorkController::class, 'end']);
+Route::get('/rest/start', [WorkController::class, 'restStartView']);
 Route::post('/rest/start', [RestController::class, 'restStart']);
-Route::get('/rest/end', [RestController::class, 'restEndView']);
-Route::get('/rest/end', [RestController::class, 'restEnd']);
+Route::get('/rest/end', [WorkController::class, 'restEndView']);
+Route::post('/rest/end', [RestController::class, 'restEnd']);
 
 
 

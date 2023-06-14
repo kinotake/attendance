@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>打刻ページ</title>
+  <title>勤務開始ページ</title>
   <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}" />
 
   <style>
@@ -42,7 +42,7 @@
     font-size: 20px;
   }
 
-  .form__button-submit{
+  .form__button-submit,.form__button{
     width: 450px;
     height:180px;
     background-color: #FFF;
@@ -50,6 +50,11 @@
     border: none;
     margin: 20px 20px 20px 20px;
   }
+
+  .form__button{
+    color: #dcdcdc;
+  }
+
 
   .form{
     display:inline;
@@ -60,6 +65,7 @@
     margin-top : 15px;
   }
   
+  
   </style>
 </head>
 <body>
@@ -67,20 +73,20 @@
     <h1 class="app_header">Atte</h1>
   <div>
  <div class="middle">
-  <p class="name">福場凛太郎さんお疲れ様です！</p>
+  <p class="name">{{$data}}さんお疲れ様です！</p>
   <div class="button-above">
     <form class="form" action="/" method="post">
     @csrf
   <button class="form__button-submit" type="submit">勤務開始
          </button>
     </form>
-  <button class="form__button-submit" type="submit">勤務終了
+  <button class="form__button" type="submit">勤務終了
          </button>
   </div>
   <div class="button-under">
-  <button class="form__button-submit" type="submit">休憩開始
+  <button class="form__button" type="submit">休憩開始
          </button>
-  <button class="form__button-submit" type="submit">休憩終了
+  <button class="form__button" type="submit">休憩終了
          </button>
   </div>
   </div>

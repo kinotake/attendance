@@ -9,4 +9,14 @@ class Rest extends Model
 {
     use HasFactory;
     protected $fillable = ['rest_end'];
+
+    public function work(){
+  return $this->belongsTo('App\Models\Work');
+
+  
+}
+   
+public function user(){
+  return $this->hasManyThrough(User::class,Work::class);
+}
 }

@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
-
+use DB;
+use Carbon\Carbon;
 class Work extends Model
 {
     use HasFactory;
@@ -29,7 +30,26 @@ public function worker(){
     return $data;
 }
 
-public function days(){
-    
+public function outputs(){
+    $outputs=Work::join('rests','rests.work_id','=','works.id')
+    ->get();
 }
+
+public function allrest(){
+  $time = new Carbon($this->rest_end);
+  $time2 = new Carbon($this->rest_start);
+
+  $item = $time->diffInSeconds($time2);
+  $h = floor($item/3600);
+  $remainder = $item%3600;
+  $m = floor($remainder/60);
+  $s = $remainder%60;
+  $format = "%02d";
+  $hours=sprintf($format, $h);
+  $minutes=sprintf($format, $m);
+  $seconds=sprintf($format, $s);
+
+   return  $hours.":".$minutes.":".$seconds;
+}
+
 }

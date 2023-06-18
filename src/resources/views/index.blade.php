@@ -108,14 +108,16 @@
     <div class="content_hedder">勤務時間</div>
     </div>
     <div class="contents">
-    @foreach($dayusers as $data)
-    <div class="content_name">{{$data->user->name}}</div><br>
-    @endforeach
-    @foreach($workdatas as $data)
-    <div class="content_full">{{$data->work_start}}</div>
+    @foreach($data as $data)
+    <div class="content_name">{{$data->name}}</div><br>
+    <div class="content_full">{{$data->rest_start}}</div>
     <div class="content_full">{{$data->work_end}}</div><br>
+   
+  
+         
+    <div class="content">{{$data->allrest()}}</div>
+    
     @endforeach
-    <div class="content">休憩時間1</div>
     <div class="content">勤務時間1</div>
     </div>
     

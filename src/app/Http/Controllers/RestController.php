@@ -7,6 +7,7 @@ use App\Models\Rest;
 use App\Http\Requests\RestRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Work;
+use Carbon\Carbon;
 
 
 class RestController extends Controller
@@ -61,5 +62,19 @@ class RestController extends Controller
          }
       
        } 
+
+       public function usersView()
+       {
+         
+         // $time=Rest::where('id',1)->first()->rest_end;
+         // $time2=Rest::where('id',1)->first()->rest_start;
+
+         //  $time = new Carbon();
+         //  $time2 = new Carbon();
+         //  $diff = Carbon->diffInSeconds($time,$time2);
+         //  dd($diff);
+         
+         return view('users',compact('diff','time'));
+       }
 
 }

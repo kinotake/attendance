@@ -8,6 +8,8 @@ use App\Http\Requests\WorkRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Rest;
+
 
 
 class WorkController extends Controller
@@ -24,13 +26,10 @@ class WorkController extends Controller
       $who= Auth::id();
       // ユーザーネームの取得
 
-      // $who=Work::worker();
-      // $check=$who->work_end;
+      
       // すでに出勤済みか調べる
       // 出勤済みの場合
           if(Work::where('user_id',$who)->exists() && Work::where('user_id',$who)->latest()->first()->work_end===null){
-               // $user= Auth::id();
-               // $item =Work::where('user_id',$user)->first();
                $item = Work::worker()->latest()->first();
                $message="既に出勤済みです。";
                return view('reststart',compact('message','item'));
@@ -97,17 +96,17 @@ class WorkController extends Controller
          // 今日のuseデータの絞り込み(名前の表示)
          $dayusers=Work::whereDate('work_start', $day)->with(['user'])->get();
 
-         // 今日のworkデータの絞り込み(勤務開始、終了の表示)
-         $workdatas=Work::whereDate('work_start', $day)->get();
-         //  休憩時間の計算
-         $restusers=Work::whereDate('work_start', $day)->with(['rests'])->get();
-         //　workデータの中でも、restのデータを持つものを探す　引き算は、複数ある場合足し算する。
-         $resttime=$restusers->rest_end-$restusers->rest_start;
-         
-         
          
 
-          return view('index',compact('workdatas','dayusers') );
+         
+          $data =Work::join('rests','rests.work_id','=','works.id')
+          ->join('users','works.user_id','=','users.id')
+          ->get();
+       
+         
+       
+
+          return view('index',compact('data') );
        }
 
     public function login()
@@ -116,7 +115,11 @@ class WorkController extends Controller
        }
 
    
-
+   
+       public function personView()
+       {
+         return view('person');
+       }
         
     
 }

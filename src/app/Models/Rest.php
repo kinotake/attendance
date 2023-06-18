@@ -19,4 +19,6 @@ class Rest extends Model
 public function user(){
   return $this->hasManyThrough(User::class,Work::class);
 }
+
+
 }

@@ -20,8 +20,7 @@
     <h1 class="app_header">Atte</h1>
   <div>
 
-  <p>{{$diff}}</p>
-  <p>{{$time}}</p>
+  
   
   <div class="end">
     <h3 class="end_content">Atte,inc.</h3>

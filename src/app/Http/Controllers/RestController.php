@@ -13,68 +13,63 @@ use Carbon\Carbon;
 class RestController extends Controller
 {
 
-    public function  restStart(RestRequest $request){
-      $who=Work::worker()->id;
+  public function  restStart(RestRequest $request)
+  {
+    $who=Work::worker()->id;
       // ユーザーネームの取得
-      $item = Work::worker();
+    $item = Work::worker();
       
       //  すでに休憩に入っているか確かめる 
       // 休憩に入っていた場合
-      if(Rest::where('work_id',$who)->exists() && Rest::where('work_id',$who)->latest()->first()->rest_end===null){
-               $message="既に休憩に入っています。";
+      if(Rest::where('work_id',$who)->exists() && Rest::where('work_id',$who)->latest()->first()->rest_end===null)
+      {
+        $message="既に休憩に入っています。";
                
+        return view('restend',compact('message','item'));
+      }
+      else 
+      {
+        $data = Work::worker();
+        $rest = new Rest();
+        $rest->work_id=$data->id;
+        $rest->rest_end=null;
+        $rest->rest_start=now()->format('Y-m-d H:i:s');
+        $rest->save();
 
-               return view('restend',compact('message','item'));
-           }
-      else {
-         $data = Work::worker();
-         $rest = new Rest();
-         $rest->work_id=$data->id;
-         $rest->rest_end=null;
-         $rest->rest_start=now()->format('Y-m-d H:i:s');
-         $rest->save();
-
-      return view('restend',compact('item'));
-           }
+        return view('restend',compact('item'));
+      }
        
-       } 
+  } 
 
-       
-    
-       
-    public function  restEnd(RestRequest $request)
-       {
-         // workレコードの入手
-          $item = Work::worker();
-         //  workテーブルからidを取り出す
-          $person = $item->id;
+  public function  restEnd(RestRequest $request)
+  {
+      // workレコードの入手
+    $item = Work::worker();
+      //  workテーブルからidを取り出す
+    $person = $item->id;
 
-         if(Rest::where('work_id',$person)->latest()->first()->rest_end===null){
-         //  Restテーブルでidが合致するものの取得
-          Rest::where('work_id',$person)->latest()->update([
-         'rest_end'=>now(),
-          ]);
-          return view('reststart',compact('item'));
-         }
-         else{
-          $message="休憩終了処理は既にされています。";
-          return view('reststart',compact('message','item'));
-         }
-      
-       } 
+      if(Rest::where('work_id',$person)->latest()->first()->rest_end===null)
+      {
+      // Restテーブルでidが合致するものの取得
+        Rest::where('work_id',$person)->latest()->update
+        ([
+        'rest_end'=>now(),
+        ]);
+        return view('reststart',compact('item'));
+      }
+      else
+      {
+        $message="休憩終了処理は既にされています。";
 
-       public function usersView()
-       {
-         
-         // $time=Rest::where('id',1)->first()->rest_end;
-         // $time2=Rest::where('id',1)->first()->rest_start;
+        return view('reststart',compact('message','item'));
+      }
+  } 
 
-         //  $time = new Carbon();
-         //  $time2 = new Carbon();
-         //  $diff = Carbon->diffInSeconds($time,$time2);
-         //  dd($diff);
-         
-         return view('users',compact('diff','time'));
-       }
+    public function errorView()
+   {
+      return view('error');
+   }
+ 
+ 
 
 }

@@ -81,7 +81,18 @@
      color: red;
   }
 
+ .day__button,.day{
+   display: inline-block;
+ }
 
+ .day__button{
+   color: blue;
+   background-color: white;
+   border-color: blue;
+   width:30px;
+   height:20px;
+   border-width:1px;
+ }
 
   </style>
 </head>
@@ -96,7 +107,8 @@
   </div>
   <div class="middle">
     <div class="middle_top">
-    <p>日付が入る</p>
+    <button class="day__button" type="submit"><<</button>
+    <p class="day">{{$day->format('Y-m-d')}}</p>
     <p class="error">
      {{session('message')}}</p>
    </div>
@@ -108,22 +120,21 @@
     <div class="content_hedder">勤務時間</div>
     </div>
     <div class="contents">
-    @foreach($data as $data)
-    <div class="content_name">{{$data->name}}</div><br>
-    <div class="content_full">{{$data->rest_start}}</div>
-    <div class="content_full">{{$data->work_end}}</div><br>
-   
-  
-         
-    <div class="content">{{$data->allrest()}}</div>
-    
+    @if (@isset($i))
+    @foreach ($i as $k)
+    <div class="content_name">{{$k->name}}</div><br>
+    <div class="content_full">{{$k->work_start->format('H:i:s')}}</div>
+    <div class="content_full">{{$k->work_end->format('H:i:s')}}</div><br>
+    <div class="content">{{$k->sumrest()}}</div>
     @endforeach
+    @endif
     <div class="content">勤務時間1</div>
     </div>
     
   <div class="end">
     <h3 class="end_content">Atte,inc.</h3>
   </div>
+  
 </body>
 
 </html>

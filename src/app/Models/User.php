@@ -62,6 +62,15 @@ class User extends Authenticatable implements MustVerifyEmail
   public function rest()
   {
     return $this->hasManyThrough(Rest::class,Work::class);
-   }
-  
+  }
+ 
+  public function a()
+  {
+     $day = \Carbon\Carbon::today();
+
+    $users = User::whereHas('works', function ($q) {
+     $q->whereday('work_start', '=', '$day');
+    })->get();
+    return $users;
+  }
 }

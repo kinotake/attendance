@@ -29,8 +29,9 @@ Auth::routes(['verify' => true]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
  
 
-Route::get('/users', [RestController::class, 'usersView']);
+Route::get('/users', [WorkController::class, 'usersView']);
 Route::post('/users', [WorkController::class, 'users']);
 Route::get('/person', [WorkController::class, 'personView']);
 Route::post('/person', [WorkController::class, 'person']);
 
+Route::get('/error', [RestController::class, 'errorView']);

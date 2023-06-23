@@ -103,7 +103,7 @@ class WorkController extends Controller
       $day = \Carbon\Carbon::today();
        // 今日のuseデータの絞り込み(名前の表示)
       $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
-     
+    
       // 今日のデータが存在しない場合、エラーへ遷移
       if($joinDatas->isEmpty()){
 
@@ -113,36 +113,46 @@ class WorkController extends Controller
       
       // データの配列化、user_idだけ取り出す。
       $arrays =$joinDatas->toArray();
-      $oneUsers = array_column($arrays, 'user_id');
+      // user_idだけの配列にする
+      $onlyUsers = array_column($arrays, 'user_id');
+      // user_idがだぶらないようにする
+      $unique = array_unique($onlyUsers);
+      // 配列の値を０からにする
+      $dayusers = array_values($unique);
       
-      $unique = array_unique($oneUsers);
-         foreach($unique as $key => $userId){
-           $q=$userId;
-            // 一人のユーザが複数休憩をとっているか
-            $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$q)->get();
+   foreach($dayusers as $value);
+   {
+      $i = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
+      
+      return view('index',compact('i','day'));       
+   }
 
+   
+         // foreach($dayusers as $value)
+         // {
          
-                
+            // 一人のユーザが複数休憩をとっているか
+            // $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
+
+               
            // 休憩が複数あるか確かめる
-            $howManyRest=$joinDatas->count();
+            // $howManyRest=$joinDatas->count();
             
                // workid１つにつきrestテーブルを複数持っていない
-            if ($howManyRest == 1) { 
-                $i = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$q)->first();
-                
-                return view('index',compact('i','day'));
+            // if ($howManyRest == 1) { 
+               //  $i = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
 
-            } else{  
-               $i = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$q)->get();
+               //  return view('index',compact('i','day'));
+
+            // } else{  
+               // $i = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
                
-               
+               // return view('index',compact('i','day'));
               
-               return view('index',compact('i','q','day'));
-              
-            }
+            // }
            
-         }
-      }   
+
+      }  
           
    }
 

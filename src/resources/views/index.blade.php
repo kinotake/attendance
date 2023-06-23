@@ -57,7 +57,7 @@
     margin-top: 22px;
   }
   .contents{
-    
+    justify-content: space-between;
   }
   .content_name{
     height: 40px;
@@ -121,11 +121,9 @@
     </div>
     <div class="contents">
     @if (@isset($i))
-    @foreach ($i as $k)
-    <div class="content_name">{{$k->name}}</div><br>
-    <div class="content_full">{{$k->work_start->format('H:i:s')}}</div>
-    <div class="content_full">{{$k->work_end->format('H:i:s')}}</div><br>
-    <div class="content">{{$k->sumrest()}}</div>
+    @foreach ($i->unique('user_id') as $i)
+    
+    <div class="content">{{$i->sumrest()}}</div>
     @endforeach
     @endif
     <div class="content">勤務時間1</div>

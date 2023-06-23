@@ -45,21 +45,78 @@ class Work extends Model
 
   public function sumrest()
   {
-   
-    $time = new Carbon($this->rest_end);
-    $time2 = new Carbon($this->rest_start);
+    $day = \Carbon\Carbon::today();
+    $value=$this->user_id;
+    
+    $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
+    
+    $howManyRest=$joinDatas->count();
 
-    $item = $time->diffInSeconds($time2);
-    $h = floor($item/3600);
-    $remainder = $item%3600;
-    $m = floor($remainder/60);
-    $s = $remainder%60;
-    $format = "%02d";
-    $hours=sprintf($format, $h);
-    $minutes=sprintf($format, $m);
-    $seconds=sprintf($format, $s);
+    if ($howManyRest == 1){
+      
+      $time = new Carbon($this->rest_end);
+      $time2 = new Carbon($this->rest_start);
 
-      return  $hours.":".$minutes.":".$seconds;
+      $item = $time->diffInSeconds($time2);
+      $h = floor($item/3600);
+      $remainder = $item%3600;
+      $m = floor($remainder/60);
+      $s = $remainder%60;
+      $zero = "%02d";
+      $hours=sprintf($zero, $h);
+      $minutes=sprintf($zero, $m);
+      $seconds=sprintf($zero, $s);
+
+      $start=$this->work_start->format('H:i:s');
+      $end=$this->work_end->format('H:i:s');
+    
+     return  $this->name.'  '.$start.'  '.$end.'  '.$hours.":".$minutes.":".$seconds;
+    } 
+    else 
+    {
+
+      $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
+
+      $arrays =$joinDatas->toArray();
+      // rest_startだけの配列にする
+      $onlyRestStarts = array_column($arrays, 'rest_start');
+      // 配列の値を０からにする
+      $dayusers = array_values($onlyRestStarts);
+
+      $arraytime = [];
+      // 各休憩時間の算出
+      foreach($dayusers as $timeOfStart)
+      {
+      
+      $searchDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->where('rest_start',$timeOfStart)->where('user_id',$value)->first();
+      
+      $timeOfEnd=$searchDatas->rest_end;
+      $timeOfStart=$searchDatas->rest_start;
+
+      $time = new Carbon($timeOfEnd);
+      $time2 = new Carbon($timeOfStart);
+
+      $item = $time->diffInSeconds($time2);
+
+      $arraytime[] = $item;
+      }
+      // 休憩時間の計
+      $arraytimeSum = array_sum($arraytime);
+      
+      $h = floor($arraytimeSum/3600);
+      $remainder = $arraytimeSum%3600;
+      $m = floor($remainder/60);
+      $s = $remainder%60;
+      $zero = "%02d";
+      $hours=sprintf($zero, $h);
+      $minutes=sprintf($zero, $m);
+      $seconds=sprintf($zero, $s);
+
+      $start=$this->work_start->format('H:i:s');
+      $end=$this->work_end->format('H:i:s');
+
+     return  $this->name.'  '.$start.'  '.$end.'  '.$hours.":".$minutes.":".$seconds;
+    }
     }
 
 }

@@ -106,7 +106,6 @@
     </div>
   </div>
   <div class="middle">  
-    <!-- type="submit" method="POST" -->
     <div class="middle_top">
     <form action="before/attendance" >
     <button class="day__button"><<</button>

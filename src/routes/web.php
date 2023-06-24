@@ -37,4 +37,5 @@ Route::get('/error', [RestController::class, 'errorView']);
 
 Route::get('/before/attendance', [WorkController::class, 'beforeView']);
 
-Route::post('before/attendance', [WorkController::class, 'haveDayView'])->name('yesterday');
+Route::post('before/attendance/yesterday', [WorkController::class, 'yesterdayView'])->name('yesterday');
+Route::post('before/attendance/tomorrow', [WorkController::class, 'tomorrowView'])->name('tomorrow');

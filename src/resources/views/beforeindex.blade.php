@@ -108,13 +108,20 @@
   <div class="middle">
     <div class="middle_top">
     <form action="{{route('yesterday')}}" method="POST">
+    <input type="hidden" value="{{$day}}"  name="day" >
     @csrf
     <button class="day__button" type="submit"><<</button>
     <input type="hidden" value="{{$day}}"  name="day" >
     </form>
+
     <p class="day">{{$day->format('Y-m-d')}}</p>
 
+    <form action="{{route('tomorrow')}}" method="POST">
+    <input type="hidden" value="{{$day}}"  name="day" >
+    @csrf
     <button class="day__button" type="submit">>></button>
+    <input type="hidden" value="{{$day}}"  name="day" >
+    </form>
     <p class="error">{{$nodata??''}}</p>
    </div>
     <div class="contents_hedders">

@@ -107,11 +107,13 @@
   </div>
   <div class="middle">
     <div class="middle_top">
-    <form action="/attendance" method="GET">
+    <form action="{{route('yesterday')}}" method="POST">
+    @csrf
     <button class="day__button" type="submit"><<</button>
-    <input type="hidden" id="id" name="id" value="$day">
+    <input type="hidden" value="{{$day}}"  name="day" >
     </form>
     <p class="day">{{$day->format('Y-m-d')}}</p>
+
     <button class="day__button" type="submit">>></button>
     <p class="error">{{$nodata??''}}</p>
    </div>

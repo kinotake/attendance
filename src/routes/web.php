@@ -36,3 +36,5 @@ Route::post('/person', [WorkController::class, 'person']);
 Route::get('/error', [RestController::class, 'errorView']);
 
 Route::get('/before/attendance', [WorkController::class, 'beforeView']);
+
+Route::post('before/attendance', [WorkController::class, 'haveDayView'])->name('yesterday');

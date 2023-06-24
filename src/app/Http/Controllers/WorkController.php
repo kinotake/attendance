@@ -158,17 +158,33 @@ class WorkController extends Controller
   
    // 今日のページの前日ボタンを押したとき
    public function beforeView()
-   {  if(isset($request)){
-      // 今日以外のページを閲覧していて、さらに前日を閲覧したい場合
-      $data = $request->all();
-      $day = $data['day'];
-      $day->subDays(1);
-      }else
-      {
-      // 今日のデータのページから前日のページを閲覧したい場合
+   {  // 今日のデータのページから前日のページを閲覧したい場合
       $day = \Carbon\Carbon::today();   
       $day->subDays(1);
-      }
+      
+      // 今日以外のデータの絞り込み
+      $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
+      
+         if(isset($joinDatas))
+         {
+            $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
+                     return view('beforeindex')->with(compact('viewDatas','day'));
+                     // return view('beforeindex',compact('viewdata','day'));       
+         }
+         else
+         {
+            $nodata="この日のデータは存在しません。";
+            return view('beforeindex','nodata',);
+         }
+    
+   }
+   public function haveDayView(Request $request)
+   {  // いたページから前日のページに遷移したい場合  
+      $data = $request->all();
+      $day = $data['day'];
+      $day = new Carbon($day);
+      $day->subDays(1);
+      
       // 今日以外のデータの絞り込み
       $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
       

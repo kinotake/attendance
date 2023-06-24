@@ -123,9 +123,9 @@
     <div class="content_hedder">勤務時間</div>
     </div>
     <div class="contents">
-    @if (@isset($viewdata))
-    @foreach ($viewdata->unique('user_id') as $viewdata)
-    <div class="content">{{$viewdata->sumrest()}}</div>
+    @if (@isset($viewDatas))
+    @foreach ($viewDatas->unique('user_id') as $viewData)
+    <div class="content">{{$viewData->sumrest()}}</div>
     @endforeach
     @endif
     

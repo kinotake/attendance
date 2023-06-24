@@ -101,7 +101,7 @@ class WorkController extends Controller
    { 
        // $day=今日の日付、ボタンを押すと＋1日になるようにする
       $day = \Carbon\Carbon::today();
-       // 今日のuseデータの絞り込み(名前の表示)
+       // 今日のuseデータの絞り込み
       $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
     
       // 今日のデータが存在しない場合、エラーへ遷移
@@ -114,24 +114,25 @@ class WorkController extends Controller
       {
       
          // データの配列化、user_idだけ取り出す。
-         $arrays =$joinDatas->toArray();
+         // $arrays =$joinDatas->toArray();
          // user_idだけの配列にする
-         $onlyUsers = array_column($arrays, 'user_id');
+         // $onlyUsers = array_column($arrays, 'user_id');
          // user_idがだぶらないようにする
-         $unique = array_unique($onlyUsers);
+         // $unique = array_unique($onlyUsers);
          // 配列の値を０からにする
-         $dayusers = array_values($unique);
+         // $dayusers = array_values($unique);
       
-            foreach($dayusers as $value);
-            {
-               $viewdata = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
+            // foreach($dayusers as $value);
+            // {
+               $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
+               // $viewdata = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
       
-                  return view('index',compact('viewdata','day'));       
+                  return view('index',compact('viewDatas','day'));       
             }
 
 // ここ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！         
 
-      }  
+      
           
    }
 
@@ -168,30 +169,17 @@ class WorkController extends Controller
       $day = \Carbon\Carbon::today();   
       $day->subDays(1);
       }
-      // 昨日のデータの絞り込み
+      // 今日以外のデータの絞り込み
       $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
       
          if(isset($joinDatas))
          {
-            // データの配列化、user_idだけ取り出す。
-            $arrays =$joinDatas->toArray();
-            // user_idだけの配列にする
-            $onlyUsers = array_column($arrays, 'user_id');
-            // user_idがだぶらないようにする
-            $unique = array_unique($onlyUsers);
-            // 配列の値を０からにする
-            $dayusers = array_values($unique);
-               
-               foreach($dayusers as $value);
-               {
-                  $viewdata = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
-      
-                     return view('beforeindex')->with(compact('viewdata','day'));
+            $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
+                     return view('beforeindex')->with(compact('viewDatas','day'));
                      // return view('beforeindex',compact('viewdata','day'));       
-               }
-
          }
-         else{
+         else
+         {
             $nodata="この日のデータは存在しません。";
             return view('beforeindex','nodata',);
          }

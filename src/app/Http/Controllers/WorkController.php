@@ -23,11 +23,15 @@ class WorkController extends Controller
    }
        
    public function start(WorkRequest $request)
-   {
-   $who= Auth::id();
-      // ユーザーネームの取得
-
-      
+   {  // ユーザーネームの取得
+      $who= Auth::id();
+      // 今日のデータが存在するか確かめる
+      if(Work::where('user_id',$who)->exists())
+      {
+      return redirect('/error/same');
+      }
+      else
+      {
       // すでに出勤済みか調べる
       // 出勤済みの場合
          if(Work::where('user_id',$who)->exists() && Work::where('user_id',$who)->latest()->first()->work_end===null)
@@ -49,6 +53,7 @@ class WorkController extends Controller
          
          return view('reststart',compact('item'));
    } 
+   }
 
    public function endView()
    { 
@@ -124,13 +129,13 @@ class WorkController extends Controller
       
             // foreach($dayusers as $value);
             // {
-               $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
+               $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->paginate(5);
                // $viewdata = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
       
                   return view('index',compact('viewDatas','day'));       
             }
 
-// ここ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！         
+         
 
       
           
@@ -209,7 +214,7 @@ class WorkController extends Controller
       $day = new Carbon($day);
       $day->addDays(1);
       
-      // 今日以外のデータの絞り込み
+      // 該当の日付のデータの絞り込み
       $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
       
          if(isset($joinDatas))
@@ -223,7 +228,12 @@ class WorkController extends Controller
             $nodata="この日のデータは存在しません。";
             return view('beforeindex','nodata',);
          }
-    
+        
+   }
+
+   public function errorSameView()
+   {
+      return view('samedayerror');
    }
 }
 

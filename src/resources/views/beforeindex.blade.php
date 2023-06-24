@@ -137,8 +137,6 @@
     <div class="content">{{$viewData->sumrest()}}</div>
     @endforeach
     @endif
-    
-    <div class="content">勤務時間1</div>
     </div>
     
   <div class="end">

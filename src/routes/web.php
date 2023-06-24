@@ -34,6 +34,7 @@ Route::get('/person', [WorkController::class, 'personView']);
 Route::post('/person', [WorkController::class, 'person']);
 
 Route::get('/error', [RestController::class, 'errorView']);
+Route::get('/error/same', [WorkController::class, 'errorSameView']);
 
 Route::get('/before/attendance', [WorkController::class, 'beforeView']);
 

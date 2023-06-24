@@ -93,6 +93,13 @@
    height:20px;
    border-width:1px;
  }
+ .pagination{
+  text-align: center;
+ }
+
+ .pagination li{
+  display: inline-block;
+ }
 
   </style>
 </head>
@@ -127,6 +134,7 @@
     <div class="content">{{$viewData->sumrest()}}</div>
     @endforeach
     @endif
+    {{$viewDatas->links()}}
     </div>
     
   <div class="end">

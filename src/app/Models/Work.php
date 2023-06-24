@@ -136,7 +136,26 @@ class Work extends Model
       $start=$this->work_start->format('H:i:s');
       $end=$this->work_end->format('H:i:s');
 
-     return  $this->name.'  '.$start.'  '.$end.'  '.$hours.":".$minutes.":".$seconds;
+      // 総勤務時間の算出
+      $time3 = new Carbon($this->work_end);
+      $time4 = new Carbon($this->work_start);
+
+      // 休憩時間を含む労働時間
+      $sumWork = $time3->diffInSeconds($time4);
+      // 休憩時間を差し引く
+      $allWork = $sumWork-$restTimeSum;
+
+      $h = floor($allWork/3600);
+      $remainder=$allWork%3600;
+      $m = floor($remainder/60);
+      $s = $remainder%60;
+      $zero = "%02d";
+      $workHours=sprintf($zero, $h);
+      $workMinutes=sprintf($zero, $m);
+      $workSeconds=sprintf($zero, $s);
+      
+
+     return  $this->name.'  '.$start.'  '.$end.'  '.$hours.":".$minutes.":".$seconds.'  '.$workHours.":".$workMinutes.":".$workSeconds;
     }
     }
 

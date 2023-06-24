@@ -25,8 +25,9 @@ class WorkController extends Controller
    public function start(WorkRequest $request)
    {  // ユーザーネームの取得
       $who= Auth::id();
+      $day = \Carbon\Carbon::today();
       // 今日のデータが存在するか確かめる
-      if(Work::where('user_id',$who)->exists())
+      if(Work::where('user_id',$who)->whereday('work_end',$day)->exists())
       {
       return redirect('/error/same');
       }
@@ -235,6 +236,56 @@ class WorkController extends Controller
    {
       return view('samedayerror');
    }
+   public function daysView()
+   {
+   // データがある日付をすべて取得
+      $workDatas = Work::get();
+      $arrays =$workDatas->toArray();
+   // work_startだけの配列を生成
+      $datas = array_column($arrays, 'work_start');
+      $workstarts = array();
+
+      foreach($datas as $data){
+      $onlyDay=substr("$data","0","10");
+      $workstarts[]=$onlyDay;
+      }
+      $unique = array_unique($workstarts);
+      $days = array_values($unique);
+      
+      
+      $daysCollection = collect($days);
+      $allTodays = $daysCollection->paginate(5);
+      // foreach($workDatas as $key=>$workData){
+         // $day = new Carbon($workData);
+         // $a=$day->format('Y-m-d');
+      // }
+     
+      // ->format('Y-m-d')->paginate(5);
+      
+         return view('days')->with(compact('allTodays'));
+   }
+
+   public function todayView(Request $request)
+   {  // 表示の日付に遷移する場合  
+      $data = $request->all();
+      $day = $data['allToday'];
+      $day = new Carbon($day);
+      
+      
+      // 今日以外のデータの絞り込み
+      $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
+      
+         if(isset($joinDatas))
+         {
+            $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
+                     return view('beforeindex')->with(compact('viewDatas','day'));
+                     // return view('beforeindex',compact('viewdata','day'));       
+         }
+         else
+         {
+            $nodata="この日のデータは存在しません。";
+            return view('beforeindex','nodata',);
+         }
+    
+   }
 }
-
-

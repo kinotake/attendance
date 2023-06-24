@@ -40,3 +40,6 @@ Route::get('/before/attendance', [WorkController::class, 'beforeView']);
 
 Route::post('before/attendance/yesterday', [WorkController::class, 'yesterdayView'])->name('yesterday');
 Route::post('before/attendance/tomorrow', [WorkController::class, 'tomorrowView'])->name('tomorrow');
+Route::post('before/attendance/thisday', [WorkController::class, 'todayView'])->name('today');
+
+Route::get('/days', [WorkController::class, 'daysView']);

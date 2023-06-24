@@ -101,7 +101,7 @@
     <h1 class="app_header">Atte</h1>
     <div class="links">
     <a href="/" name="link">ホーム</a>
-    <a name="link">日付一覧（まだ）</a>
+    <a href="/days" name="link">日付一覧（まだ）</a>
     <a name="link">勤務時間（まだ）</a>
     </div>
   </div>

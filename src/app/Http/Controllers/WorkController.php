@@ -109,48 +109,27 @@ class WorkController extends Controller
 
          return view('error');
 
-      }else{
+      }
+      else
+      {
       
-      // データの配列化、user_idだけ取り出す。
-      $arrays =$joinDatas->toArray();
-      // user_idだけの配列にする
-      $onlyUsers = array_column($arrays, 'user_id');
-      // user_idがだぶらないようにする
-      $unique = array_unique($onlyUsers);
-      // 配列の値を０からにする
-      $dayusers = array_values($unique);
+         // データの配列化、user_idだけ取り出す。
+         $arrays =$joinDatas->toArray();
+         // user_idだけの配列にする
+         $onlyUsers = array_column($arrays, 'user_id');
+         // user_idがだぶらないようにする
+         $unique = array_unique($onlyUsers);
+         // 配列の値を０からにする
+         $dayusers = array_values($unique);
       
-   foreach($dayusers as $value);
-   {
-      $i = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
+            foreach($dayusers as $value);
+            {
+               $viewdata = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
       
-      return view('index',compact('i','day'));       
-   }
+                  return view('index',compact('viewdata','day'));       
+            }
 
-   
-         // foreach($dayusers as $value)
-         // {
-         
-            // 一人のユーザが複数休憩をとっているか
-            // $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
-
-               
-           // 休憩が複数あるか確かめる
-            // $howManyRest=$joinDatas->count();
-            
-               // workid１つにつきrestテーブルを複数持っていない
-            // if ($howManyRest == 1) { 
-               //  $i = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
-
-               //  return view('index',compact('i','day'));
-
-            // } else{  
-               // $i = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
-               
-               // return view('index',compact('i','day'));
-              
-            // }
-           
+// ここ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！         
 
       }  
           
@@ -174,4 +153,50 @@ class WorkController extends Controller
 
       return view('users');
    }
+
+  
+   // 今日のページの前日ボタンを押したとき
+   public function beforeView()
+   {  if(isset($request)){
+      // 今日以外のページを閲覧していて、さらに前日を閲覧したい場合
+      $data = $request->all();
+      $day = $data['day'];
+      $day->subDays(1);
+      }else
+      {
+      // 今日のデータのページから前日のページを閲覧したい場合
+      $day = \Carbon\Carbon::today();   
+      $day->subDays(1);
+      }
+      // 昨日のデータの絞り込み
+      $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
+      
+         if(isset($joinDatas))
+         {
+            // データの配列化、user_idだけ取り出す。
+            $arrays =$joinDatas->toArray();
+            // user_idだけの配列にする
+            $onlyUsers = array_column($arrays, 'user_id');
+            // user_idがだぶらないようにする
+            $unique = array_unique($onlyUsers);
+            // 配列の値を０からにする
+            $dayusers = array_values($unique);
+               
+               foreach($dayusers as $value);
+               {
+                  $viewdata = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
+      
+                     return view('beforeindex')->with(compact('viewdata','day'));
+                     // return view('beforeindex',compact('viewdata','day'));       
+               }
+
+         }
+         else{
+            $nodata="この日のデータは存在しません。";
+            return view('beforeindex','nodata',);
+         }
+    
+   }
 }
+
+

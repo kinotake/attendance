@@ -33,7 +33,7 @@ class Work extends Model
   {
     $person = Auth::id();
     $data = Work::where('user_id',$person)->latest()->first();
-      //  ログインしているユーザのworkレコード
+  //  ログインしているユーザのworkレコード
  
     return $data;
   }
@@ -51,15 +51,15 @@ class Work extends Model
     $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
     
     $howManyRest=$joinDatas->count();
-
+  // 休憩時間一回の場合
     if ($howManyRest == 1){
-      
+      // 総休憩時間の算出
       $time = new Carbon($this->rest_end);
       $time2 = new Carbon($this->rest_start);
 
-      $item = $time->diffInSeconds($time2);
-      $h = floor($item/3600);
-      $remainder = $item%3600;
+      $sum = $time->diffInSeconds($time2);
+      $h = floor($sum/3600);
+      $remainder = $sum%3600;
       $m = floor($remainder/60);
       $s = $remainder%60;
       $zero = "%02d";
@@ -69,12 +69,33 @@ class Work extends Model
 
       $start=$this->work_start->format('H:i:s');
       $end=$this->work_end->format('H:i:s');
+
+      // 総勤務時間の算出
+      $time3 = new Carbon($this->work_end);
+      $time4 = new Carbon($this->work_start);
+
+      // 休憩時間を含む労働時間
+      $sumWork = $time3->diffInSeconds($time4);
+      // 休憩時間を差し引く
+      $allWork = $sumWork-$sum;
+
+      $h = floor($allWork/3600);
+      $remainder=$allWork%3600;
+      $m = floor($remainder/60);
+      $s = $remainder%60;
+      $zero = "%02d";
+      $workHours=sprintf($zero, $h);
+      $workMinutes=sprintf($zero, $m);
+      $workSeconds=sprintf($zero, $s);
+      
+
     
-     return  $this->name.'  '.$start.'  '.$end.'  '.$hours.":".$minutes.":".$seconds;
+     return  $this->name.'  '.$start.'  '.$end.'  '.$hours.":".$minutes.":".$seconds.'  '.$workHours.":".$workMinutes.":".$workSeconds;
     } 
     else 
     {
-
+      // 休憩時間複数の場合
+      // 総休憩時間の算出
       $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
 
       $arrays =$joinDatas->toArray();
@@ -101,10 +122,10 @@ class Work extends Model
       $arraytime[] = $item;
       }
       // 休憩時間の計
-      $arraytimeSum = array_sum($arraytime);
+      $restTimeSum = array_sum($arraytime);
       
-      $h = floor($arraytimeSum/3600);
-      $remainder = $arraytimeSum%3600;
+      $h = floor($restTimeSum/3600);
+      $remainder = $restTimeSum%3600;
       $m = floor($remainder/60);
       $s = $remainder%60;
       $zero = "%02d";

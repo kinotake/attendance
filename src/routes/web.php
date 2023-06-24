@@ -21,7 +21,6 @@ Route::get('/rest/end', [WorkController::class, 'restEndView']);
 Route::post('/rest/end', [RestController::class, 'restEnd']);
 Route::post('/end', [WorkController::class, 'end']);
 Route::get('/attendance', [WorkController::class, 'index']);
-
 // ->middleware('verified')
 Auth::routes(['verify' => true]);
 
@@ -35,3 +34,5 @@ Route::get('/person', [WorkController::class, 'personView']);
 Route::post('/person', [WorkController::class, 'person']);
 
 Route::get('/error', [RestController::class, 'errorView']);
+
+Route::get('/before/attendance', [WorkController::class, 'beforeView']);

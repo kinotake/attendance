@@ -102,12 +102,15 @@
     <div class="links">
     <a href="/" name="link">ホーム</a>
     <a name="link">日付一覧（まだ）</a>
-    <a name="link">勤務時間（まだ）</a>
+    <a name="link">ログアウト（まだ）</a>
     </div>
   </div>
-  <div class="middle">
+  <div class="middle">  
+    <!-- type="submit" method="POST" -->
     <div class="middle_top">
-    <button class="day__button" type="submit"><<</button>
+    <form action="before/attendance" >
+    <button class="day__button"><<</button>
+    </form>
     <p class="day">{{$day->format('Y-m-d')}}</p>
     <p class="error">
      {{session('message')}}</p>
@@ -120,13 +123,11 @@
     <div class="content_hedder">勤務時間</div>
     </div>
     <div class="contents">
-    @if (@isset($i))
-    @foreach ($i->unique('user_id') as $i)
-    
-    <div class="content">{{$i->sumrest()}}</div>
+    @if (@isset($viewdata))
+    @foreach ($viewdata->unique('user_id') as $viewdata)
+    <div class="content">{{$viewdata->sumrest()}}</div>
     @endforeach
     @endif
-    <div class="content">勤務時間1</div>
     </div>
     
   <div class="end">

@@ -107,8 +107,13 @@
   </div>
   <div class="middle">
     <div class="middle_top">
+    <form action="/attendance" method="GET">
     <button class="day__button" type="submit"><<</button>
+    <input type="hidden" id="id" name="id" value="$day">
+    </form>
     <p class="day">{{$day->format('Y-m-d')}}</p>
+    <button class="day__button" type="submit">>></button>
+    <p class="error">{{$nodata??''}}</p>
    </div>
     <div class="contents_hedders">
     <div class="content_hedder">名前</div>
@@ -118,13 +123,11 @@
     <div class="content_hedder">勤務時間</div>
     </div>
     <div class="contents">
-    @foreach($i as $a)
-    <div class="content_name">{{$a->name}}</div><br>
-    <div class="content_full">{{$a->work_start->format('H:i:s')}}</div>
-    <div class="content_full">{{$a->work_end->format('H:i:s')}}</div><br>
-    <div class="content">{{$a->sumrest()}}</div>
-    
+    @if (@isset($viewdata))
+    @foreach ($viewdata->unique('user_id') as $viewdata)
+    <div class="content">{{$viewdata->sumrest()}}</div>
     @endforeach
+    @endif
     
     <div class="content">勤務時間1</div>
     </div>

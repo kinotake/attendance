@@ -29,7 +29,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
  
 
 Route::get('/users', [WorkController::class, 'usersView']);
-Route::post('/users', [WorkController::class, 'users']);
+Route::post('/users', [WorkController::class, 'users'])->name('who');
 Route::get('/person', [WorkController::class, 'personView']);
 Route::post('/person', [WorkController::class, 'person']);
 

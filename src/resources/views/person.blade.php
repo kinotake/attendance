@@ -19,7 +19,21 @@
   <div class="header">
     <h1 class="app_header">Atte</h1>
   <div>
-  <p>個人の勤怠がここに入る</p>
+    <div class="contents_hedders">
+    <div class="content_hedder">名前</div>
+    <div class="content_hedder">勤務開始</div>
+    <div class="content_hedder">勤務終了</div>
+    <div class="content_hedder">休憩時間</div>
+    <div class="content_hedder">勤務時間</div>
+    </div>
+    <div class="contents">
+    @if (@isset($viewDatas))
+    @foreach ($viewDatas as $viewData)
+    <div class="content">{{$viewData->datesum()}}</div>
+    @endforeach
+    @endif
+    {{$viewDatas->links()}}
+    </div>
   <div class="end">
     <h3 class="end_content">Atte,inc.</h3>
   </div>

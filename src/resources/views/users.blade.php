@@ -11,15 +11,32 @@
     margin: 0;
     padding: 0;
     }
-  
-  
+
+    .middle{
+    height: 500px;
+    width: 100%;
+    background: #f5f5f5;
+    }
+    .end{
+    text-align: center;
+    margin-top : 20px;
+    }
   </style>
 </head>
 <body>
   <div class="header">
     <h1 class="app_header">Atte</h1>
   <div>
-
+  <div class="middle">
+  @foreach($users as $person)  
+  <form action="{{route('who')}}" method="POST">
+    <input type="hidden" value="{{$person->id}}"  name="id" >
+    @csrf
+    <button class="who__button" type="submit">{{$person->name}}</button>
+  </form>
+  @endforeach
+  </div>
+  
   
   
   <div class="end">

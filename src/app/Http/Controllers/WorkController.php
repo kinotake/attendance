@@ -155,10 +155,20 @@ class WorkController extends Controller
    }
         
    public function usersView()
-   {
-         
+   {  // 全部のユーザーを取得
+      $users=User::allusers();
 
-      return view('users');
+      return view('users')->with(compact('users'));
+   }
+
+   public function users(Request $request)
+   {
+      $data = $request->all();
+      // 押したボタンのユーザーid
+      $id = $data['id'];
+      $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->where('user_id',$id)->paginate(5);
+
+      return view('person')->with(compact('viewDatas'));
    }
 
   
@@ -284,7 +294,7 @@ class WorkController extends Controller
          else
          {
             $nodata="この日のデータは存在しません。";
-            return view('beforeindex','nodata',);
+            return view('beforeindex')->with(compact('nodata'));
          }
     
    }

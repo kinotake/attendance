@@ -63,7 +63,7 @@ class User extends Authenticatable implements MustVerifyEmail
   {
     return $this->hasManyThrough(Rest::class,Work::class);
   }
- 
+
   public function a()
   {
      $day = \Carbon\Carbon::today();
@@ -72,5 +72,12 @@ class User extends Authenticatable implements MustVerifyEmail
      $q->whereday('work_start', '=', '$day');
     })->get();
     return $users;
+  }
+
+  public function allusers()
+  {
+    $allusers = User::get();
+
+    return $allusers;
   }
 }

@@ -42,10 +42,11 @@ class Work extends Model
   {
     $outputs=Work::join('rests','rests.work_id','=','works.id')->get();
   }
-
+  // 日付を返さない
   public function sumrest()
   {
-    $day = \Carbon\Carbon::today();
+  // 休憩時間が複数か
+    $day = $this->work_start;
     $value=$this->user_id;
     
     $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
@@ -158,10 +159,10 @@ class Work extends Model
      return  $this->name.'  '.$start.'  '.$end.'  '.$hours.":".$minutes.":".$seconds.'  '.$workHours.":".$workMinutes.":".$workSeconds;
     }
   }
-
+    // 日付を返す
     public function datesum()
   {
-    $day = \Carbon\Carbon::today();
+    $day = $this->work_start;
     $value=$this->user_id;
     
     $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();

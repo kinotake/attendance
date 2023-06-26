@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Work;
 use App\Http\Requests\WorkRequest;
 use App\Http\Controllers\Controller;
@@ -10,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Rest;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 
 
@@ -24,8 +24,8 @@ class WorkController extends Controller
        
    public function start(WorkRequest $request)
    {  // ユーザーネームの取得
-      $who= Auth::id();
       $day = \Carbon\Carbon::today();
+      $who= Auth::id();
       // 今日のデータが存在するか確かめる
       if(Work::where('user_id',$who)->whereday('work_end',$day)->exists())
       {
@@ -105,7 +105,7 @@ class WorkController extends Controller
 // orderBy('user_id', 'asc')
    public function index()
    { 
-       // $day=今日の日付、ボタンを押すと＋1日になるようにする
+       
       $day = \Carbon\Carbon::today();
        // 今日のuseデータの絞り込み
       $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
@@ -118,23 +118,10 @@ class WorkController extends Controller
       }
       else
       {
-      
-         // データの配列化、user_idだけ取り出す。
-         // $arrays =$joinDatas->toArray();
-         // user_idだけの配列にする
-         // $onlyUsers = array_column($arrays, 'user_id');
-         // user_idがだぶらないようにする
-         // $unique = array_unique($onlyUsers);
-         // 配列の値を０からにする
-         // $dayusers = array_values($unique);
-      
-            // foreach($dayusers as $value);
-            // {
-               $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->paginate(5);
-               // $viewdata = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->where('user_id',$value)->get();
-      
-                  return view('index',compact('viewDatas','day'));       
-            }
+         $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->paginate(5);
+   
+            return view('index',compact('viewDatas','day'));       
+      }
 
          
 
@@ -168,7 +155,9 @@ class WorkController extends Controller
       $id = $data['id'];
       $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->where('user_id',$id)->paginate(5);
 
-      return view('person')->with(compact('viewDatas'));
+      $name = User::allusers()->where('id',$id)->first();
+      
+      return view('person')->with(compact('viewDatas','name'));
    }
 
   
@@ -181,16 +170,18 @@ class WorkController extends Controller
       // 今日以外のデータの絞り込み
       $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
       
-         if(isset($joinDatas))
+         $howManyData=$joinDatas->count();
+
+         if($howManyData > 0)
          {
-            $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
+            $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->paginate(5);
                      return view('beforeindex')->with(compact('viewDatas','day'));
                      // return view('beforeindex',compact('viewdata','day'));       
          }
          else
          {
             $nodata="この日のデータは存在しません。";
-            return view('beforeindex','nodata',);
+            return view('beforeindex')->with(compact('nodata','day'));
          }
     
    }
@@ -204,16 +195,19 @@ class WorkController extends Controller
       // 今日以外のデータの絞り込み
       $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
       
-         if(isset($joinDatas))
+         $howManyData=$joinDatas->count();
+
+         if($howManyData > 0)
          {
-            $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
+            $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->paginate(5);
+            
                      return view('beforeindex')->with(compact('viewDatas','day'));
-                     // return view('beforeindex',compact('viewdata','day'));       
+                           
          }
          else
          {
             $nodata="この日のデータは存在しません。";
-            return view('beforeindex','nodata',);
+            return view('beforeindex')->with(compact('nodata','day'));
          }
     
    }
@@ -228,16 +222,18 @@ class WorkController extends Controller
       // 該当の日付のデータの絞り込み
       $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
       
-         if(isset($joinDatas))
+      $howManyData=$joinDatas->count();
+
+         if($howManyData > 0)
          {
-            $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
+            $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->paginate(5);
                      return view('beforeindex')->with(compact('viewDatas','day'));
                      // return view('beforeindex',compact('viewdata','day'));       
          }
          else
          {
             $nodata="この日のデータは存在しません。";
-            return view('beforeindex','nodata',);
+            return view('beforeindex')->with(compact('nodata','day'));
          }
         
    }
@@ -285,7 +281,9 @@ class WorkController extends Controller
       // 今日以外のデータの絞り込み
       $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
       
-         if(isset($joinDatas))
+         $howManyData=$joinDatas->count();
+
+         if($howManyData > 0)
          {
             $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
                      return view('beforeindex')->with(compact('viewDatas','day'));
@@ -294,7 +292,7 @@ class WorkController extends Controller
          else
          {
             $nodata="この日のデータは存在しません。";
-            return view('beforeindex')->with(compact('nodata'));
+            return view('beforeindex')->with(compact('nodata','day'));
          }
     
    }

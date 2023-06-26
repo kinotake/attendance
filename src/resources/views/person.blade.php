@@ -12,15 +12,18 @@
     padding: 0;
     }
   
-  
+    .content_name{
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <div class="header">
     <h1 class="app_header">Atte</h1>
   <div>
+    <div class="content_name">{{$name->name}}さんの勤怠情報</div>
     <div class="contents_hedders">
-    <div class="content_hedder">名前</div>
+    <div class="content_hedder">日付</div>
     <div class="content_hedder">勤務開始</div>
     <div class="content_hedder">勤務終了</div>
     <div class="content_hedder">休憩時間</div>

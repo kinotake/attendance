@@ -101,7 +101,7 @@
     <h1 class="app_header">Atte</h1>
     <div class="links">
     <a href="/" name="link">ホーム</a>
-    <a href="/days" name="link">日付一覧（まだ）</a>
+    <a href="/days" name="link">日付一覧</a>
     <a name="link">勤務時間（まだ）</a>
     </div>
   </div>
@@ -122,7 +122,6 @@
     <button class="day__button" type="submit">>></button>
     <input type="hidden" value="{{$day}}"  name="day" >
     </form>
-    <p class="error">{{$nodata??''}}</p>
    </div>
     <div class="contents_hedders">
     <div class="content_hedder">名前</div>
@@ -132,10 +131,12 @@
     <div class="content_hedder">勤務時間</div>
     </div>
     <div class="contents">
+    <p class="error">{{$nodata??''}}</p>
     @if (@isset($viewDatas))
     @foreach ($viewDatas->unique('user_id') as $viewData)
     <div class="content">{{$viewData->sumrest()}}</div>
     @endforeach
+    {{$viewDatas->links()}}
     @endif
     </div>
     

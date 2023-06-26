@@ -108,7 +108,7 @@
     <h1 class="app_header">Atte</h1>
     <div class="links">
     <a href="/" name="link">ホーム</a>
-    <a href="/days" name="link">日付一覧（まだ）</a>
+    <a href="/days" name="link">日付一覧</a>
     <a name="link">ログアウト（まだ）</a>
     </div>
   </div>
@@ -133,8 +133,8 @@
     @foreach ($viewDatas->unique('user_id') as $viewData)
     <div class="content">{{$viewData->sumrest()}}</div>
     @endforeach
-    @endif
     {{$viewDatas->links()}}
+    @endif
     </div>
     
   <div class="end">

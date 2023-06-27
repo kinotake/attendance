@@ -12,7 +12,7 @@
     padding: 0;
     }
 
-     .header{
+  .header{
     background: #fff;
     height : 50px;
     display : flex;
@@ -37,7 +37,7 @@
 
   .middle_top{
     padding-top: 30px;
-    text-align: center;
+    display:flex
   }
 
   .contents_hedders{
@@ -57,7 +57,7 @@
     margin-top: 22px;
   }
   .contents{
-    
+    text-align: center;
   }
   .content_name{
     height: 40px;
@@ -92,7 +92,15 @@
    width:30px;
    height:20px;
    border-width:1px;
+   margin:0 auto;
  }
+
+ .day{
+  margin:0 auto
+ }
+
+
+ 
 
   </style>
 </head>
@@ -100,45 +108,42 @@
   <div class="header">
     <h1 class="app_header">Atte</h1>
     <div class="links">
-    <a href="/" name="link">ホーム</a>
-    <a href="/days" name="link">日付一覧</a>
-    <a name="link">勤務時間（まだ）</a>
+      <a href="/" name="link">ホーム</a>
+      <a href="/days" name="link">日付一覧</a>
+      <a href="/users" name="link">ユーザー一覧</a>
+        <a name="link">ログアウト（まだ）</a>
     </div>
   </div>
   <div class="middle">
     <div class="middle_top">
-    <form action="{{route('yesterday')}}" method="POST">
-    <input type="hidden" value="{{$day}}"  name="day" >
-    @csrf
-    <button class="day__button" type="submit"><<</button>
-    <input type="hidden" value="{{$day}}"  name="day" >
-    </form>
-
-    <p class="day">{{$day->format('Y-m-d')}}</p>
-
-    <form action="{{route('tomorrow')}}" method="POST">
-    <input type="hidden" value="{{$day}}"  name="day" >
-    @csrf
-    <button class="day__button" type="submit">>></button>
-    <input type="hidden" value="{{$day}}"  name="day" >
-    </form>
-   </div>
-    <div class="contents_hedders">
+      <form action="{{route('yesterday')}}" method="POST">
+        <input type="hidden" value="{{$day}}"  name="day" >
+        @csrf
+        <button class="day__button" type="submit"><<</button>
+      </form>
+      <p class="day">{{$day->format('Y-m-d')}}</p>
+      <form action="{{route('tomorrow')}}" method="POST">
+        <input type="hidden" value="{{$day}}"  name="day" >
+        @csrf
+        <button class="day__button" type="submit">>></button>
+      </form>
+    </div>
+  <div class="contents_hedders">
     <div class="content_hedder">名前</div>
     <div class="content_hedder">勤務開始</div>
     <div class="content_hedder">勤務終了</div>
     <div class="content_hedder">休憩時間</div>
     <div class="content_hedder">勤務時間</div>
-    </div>
-    <div class="contents">
+  </div>
+  <div class="contents">
     <p class="error">{{$nodata??''}}</p>
     @if (@isset($viewDatas))
-    @foreach ($viewDatas->unique('user_id') as $viewData)
-    <div class="content">{{$viewData->sumrest()}}</div>
-    @endforeach
+      @foreach ($viewDatas->unique('user_id') as $viewData)
+        <div class="content">{{$viewData->sumrest()}}</div>
+      @endforeach
     {{$viewDatas->links()}}
     @endif
-    </div>
+  </div>
     
   <div class="end">
     <h3 class="end_content">Atte,inc.</h3>

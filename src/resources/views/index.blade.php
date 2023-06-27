@@ -7,12 +7,12 @@
   <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}" />
 
   <style>
-*{
+    *{
     margin: 0;
     padding: 0;
     }
 
-     .header{
+    .header{
     background: #fff;
     height : 50px;
     display : flex;
@@ -57,7 +57,9 @@
     margin-top: 22px;
   }
   .contents{
-    justify-content: space-between;
+    width:100%;
+    display: inline-block; 
+    text-align: center;
   }
   .content_name{
     height: 40px;
@@ -101,6 +103,13 @@
   display: inline-block;
  }
 
+ .content{
+  justify-content: space-between;
+  height:40px;
+  margin-top : 15px;
+  font-size : 19px;
+ }
+
   </style>
 </head>
 <body>
@@ -109,6 +118,7 @@
     <div class="links">
     <a href="/" name="link">ホーム</a>
     <a href="/days" name="link">日付一覧</a>
+    <a href="/users" name="link">ユーザー一覧</a>
     <a name="link">ログアウト（まだ）</a>
     </div>
   </div>
@@ -131,10 +141,11 @@
     <div class="contents">
     @if (@isset($viewDatas))
     @foreach ($viewDatas->unique('user_id') as $viewData)
-    <div class="content">{{$viewData->sumrest()}}</div>
+    <p class="content">{{$viewData->sumrest()}}</p>
     @endforeach
     {{$viewDatas->links()}}
     @endif
+    </div>
     </div>
     
   <div class="end">

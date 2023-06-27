@@ -34,8 +34,9 @@
     @foreach ($viewDatas as $viewData)
     <div class="content">{{$viewData->datesum()}}</div>
     @endforeach
-    @endif
     {{$viewDatas->links()}}
+    @endif
+   
     </div>
   <div class="end">
     <h3 class="end_content">Atte,inc.</h3>

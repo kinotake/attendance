@@ -16,7 +16,8 @@ use Illuminate\Http\Request;
 class WorkController extends Controller
 {   
    public function view()
-   { 
+   {
+
       $data =User::name();
       
       return view('start', ['data' => $data]);
@@ -24,6 +25,7 @@ class WorkController extends Controller
        
    public function start(WorkRequest $request)
    {  // ユーザーネームの取得
+      
       $day = \Carbon\Carbon::today();
       $who= Auth::id();
       // 今日のデータが存在するか確かめる
@@ -143,9 +145,10 @@ class WorkController extends Controller
         
    public function usersView()
    {  // 全部のユーザーを取得
-      $users=User::allusers();
+      $users=User::allusers()->paginate(16);
+      $counter= 0;
 
-      return view('users')->with(compact('users'));
+      return view('users')->with(compact('users','counter'));
    }
 
    public function users(Request $request)
@@ -260,15 +263,15 @@ class WorkController extends Controller
       
       
       $daysCollection = collect($days);
-      $allTodays = $daysCollection->paginate(5);
+      $allTodays = $daysCollection->paginate(16);
       // foreach($workDatas as $key=>$workData){
          // $day = new Carbon($workData);
          // $a=$day->format('Y-m-d');
       // }
-     
+      $counter= 0;
       // ->format('Y-m-d')->paginate(5);
       
-         return view('days')->with(compact('allTodays'));
+         return view('days')->with(compact('allTodays','counter'));
    }
 
    public function todayView(Request $request)
@@ -285,7 +288,7 @@ class WorkController extends Controller
 
          if($howManyData > 0)
          {
-            $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
+            $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->paginate(5);
                      return view('beforeindex')->with(compact('viewDatas','day'));
                      // return view('beforeindex',compact('viewdata','day'));       
          }

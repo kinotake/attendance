@@ -12,14 +12,46 @@
     padding: 0;
     }
 
-    .middle{
-    height: 500px;
-    width: 100%;
-    background: #f5f5f5;
-    }
+    .a{
+      height: 500px;
+      width: 100%;
+      background: #f5f5f5;
+      }
     .end{
     text-align: center;
     margin-top : 20px;
+    }
+
+    .who__button{
+    width:290px;
+    height:90px;
+    margin-right : 10px;
+    margin-left : 10px;
+    margin-top : 10px;
+    font-size : 30px;
+    border : none;
+    background-color: white;
+    }
+
+    .middle{
+    display : flex;
+    flex-wrap: wrap;
+    }
+
+    .introduce{
+    padding-top : 10px;
+    text-align: center;
+    font-size : 20px;
+    }
+
+    .counter{
+      font-size : 1px;
+      display:block;
+      display:none;
+    }
+
+    .link{
+      text-align: center;
     }
   </style>
 </head>
@@ -27,14 +59,24 @@
   <div class="header">
     <h1 class="app_header">Atte</h1>
   <div>
+  <div class="a">
+   <p class="introduce">ユーザ一覧</p> 
   <div class="middle">
   @foreach($users as $person)  
   <form action="{{route('who')}}" method="POST">
     <input type="hidden" value="{{$person->id}}"  name="id" >
     @csrf
+  <p class="counter">{{$counter++}}</p>
+  @if($counter%4==0)
+    <button class="who__button" type="submit">{{$person->name}}</button><br />
+    </form>
+  @else
     <button class="who__button" type="submit">{{$person->name}}</button>
-  </form>
+    </form>
+  @endif
   @endforeach
+  </div>
+  <div class="link">{{$users->links()}}</div>
   </div>
   
   

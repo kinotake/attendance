@@ -24,4 +24,5 @@
         <p>今日登録されたデータが存在しません。</p>
         <a href="/login" name="link">ログイン</a>
     </div>
+
 </body>

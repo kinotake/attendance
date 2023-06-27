@@ -89,7 +89,6 @@ class Work extends Model
       $workMinutes=sprintf($zero, $m);
       $workSeconds=sprintf($zero, $s);
       
-
     
      return  $this->name.'  '.$start.'  '.$end.'  '.$hours.":".$minutes.":".$seconds.'  '.$workHours.":".$workMinutes.":".$workSeconds;
     } 
@@ -154,6 +153,7 @@ class Work extends Model
       $workHours=sprintf($zero, $h);
       $workMinutes=sprintf($zero, $m);
       $workSeconds=sprintf($zero, $s);
+
       
 
      return  $this->name.'  '.$start.'  '.$end.'  '.$hours.":".$minutes.":".$seconds.'  '.$workHours.":".$workMinutes.":".$workSeconds;

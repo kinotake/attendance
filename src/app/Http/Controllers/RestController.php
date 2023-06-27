@@ -51,7 +51,7 @@ class RestController extends Controller
       if(Rest::where('work_id',$person)->latest()->first()->rest_end===null)
       {
       // Restテーブルでidが合致するものの取得
-        Rest::where('work_id',$person)->latest()->update
+        Rest::where('work_id',$person)->latest()->first()->update
         ([
         'rest_end'=>now(),
         ]);

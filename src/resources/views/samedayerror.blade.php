@@ -15,13 +15,11 @@
     .contents{
     text-align: center;
     }
-  
-  
   </style>
 </head>
 <body>
-    <div class="contents">
-        <p>本日は既に出勤済みです。</p>
-        <a href="/attendance" name="link">本日の勤怠情報一覧</a>
-    </div>
+  <div class="contents">
+    <p>本日は既に出勤済みです。</p>
+    <a href="/attendance" name="link">本日の勤怠情報一覧</a>
+  </div>
 </body>

@@ -8,15 +8,13 @@
 
   <style>
    *{
-    margin: 0;
-    padding: 0;
+      margin: 0;
+      padding: 0;
     }
 
     .contents{
-    text-align: center;
+      text-align: center;
     }
-  
-  
   </style>
 </head>
 <body>
@@ -24,5 +22,4 @@
         <p>今日登録されたデータが存在しません。</p>
         <a href="/login" name="link">ログイン</a>
     </div>
-
 </body>

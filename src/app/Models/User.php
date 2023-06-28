@@ -11,7 +11,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+   use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -45,39 +45,40 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new \App\Notifications\VerifyEmailJapanese);
+      $this->notify(new \App\Notifications\VerifyEmailJapanese);
     }
 
-    public function work(){
-  return $this->hasMany('App\Models\Work');
-}
- public function name()
-  { 
-    $who= Auth::id();
-    $txt =User::where('id',$who)->first()->name;
-    return $txt;
+    public function work()
+    {
+      return $this->hasMany('App\Models\Work');
+    }
 
-  }
+    public function name()
+    { 
+      if(Auth::id()!=null)
+      {
+        $who= Auth::id();
+        $txt =User::where('id',$who)->first()->name;
+
+          return $txt;
+      }
+      else
+      {
+        $txt ="！！！ログインされていません。";
+
+          return $txt;
+      }
+    }
 
   public function rest()
   {
     return $this->hasManyThrough(Rest::class,Work::class);
   }
 
-  public function a()
-  {
-     $day = \Carbon\Carbon::today();
-
-    $users = User::whereHas('works', function ($q) {
-     $q->whereday('work_start', '=', '$day');
-    })->get();
-    return $users;
-  }
-
   public function allusers()
   {
     $allusers = User::get();
 
-    return $allusers;
+      return $allusers;
   }
 }

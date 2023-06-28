@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="{{ asset('css/sanitize.css') }}" />
 
   <style>
-*{
+  *{
     margin: 0;
     padding: 0;
     }
@@ -51,7 +51,7 @@
      text-align :center;
   }
 
-   .content_hedder{
+  .content_hedder{
     display: inline-block;
     text-align: center;
     height: 150px;
@@ -60,8 +60,8 @@
   }
   .contents,.thisday{
     text-align: center;
-   
   }
+
   .content_name{
     height: 40px;
     width: 380px;
@@ -73,49 +73,47 @@
     height: 40px;
     width: 200px;
     display: inline-block;
- 
   }
+
   .end{
     text-align: center;
     margin-top : 15px;
   }
 
   .error{
-     color: red;
+    color: red;
   }
 
- .day__button{
+  .day__button{
    display : block;
- }
+  }
 
- .day__button{
+  .day__button{
    color: blue;
    background-color: white;
    border-color: blue;
    width:30px;
    height:20px;
    border-width:1px;
-   
- }
+   }
 
- .pagination li{
-  display: inline-block;
- }
+  .pagination li{
+    display: inline-block;
+  }
 
- .pagination{
-  text-align: center;
- }
+  .pagination{
+    text-align: center;
+  }
 
+  .content{
+    text-align: center;
+    height:40px;
+    margin-top : 15px;
+    font-size : 25px;
+    margin-left: -50px
+  }
 
-.content{
-  text-align: center;
-  height:40px;
-  margin-top : 15px;
-  font-size : 25px;
-  margin-left: -50px
- }
-
-.contents{
+  .contents{
     width:100%;
     display: inline-block; 
     text-align: center;
@@ -127,39 +125,40 @@
     justify-content: center;
     margin-top: 38px;
     margin-bottom: 40px;
-}
+  }
 
-.paginationWrap ul.pagination {
+  .paginationWrap ul.pagination {
     display: inline-block;
     padding: 0;
     margin: 0;
-}
+  }
 
-.paginationWrap ul.pagination li {
-  display: inline;
-  margin-right: 4px;
-}
+  .paginationWrap ul.pagination li {
+    display: inline;
+    margin-right: 4px;
+  }
 
-.paginationWrap ul.pagination li a {
+  .paginationWrap ul.pagination li a {
     color: #2f3859;
     padding: 8px 14px;
     text-decoration: none;
-}
+  }
 
-.paginationWrap ul.pagination li a.active {
+  .paginationWrap ul.pagination li a.active {
     background-color: #4b90f6;
     color: white;
     width: 38px;
     height: 38px;
-}
+  }
 
-.paginationWrap ul.pagination li a:hover:not(.active) {
+  .paginationWrap ul.pagination li a:hover:not(.active) {
     background-color: #e1e7f0;
-}
-.link,.dropdown-item{
-color : black;
-text-decoration: none;
-}
+  }
+
+  .link,.dropdown-item{
+    color : black;
+    text-decoration: none;
+  }
   </style>
 </head>
 <body>
@@ -169,9 +168,7 @@ text-decoration: none;
       <a href="/" name="link" class="link">ホーム</a>
       <a href="/days" name="link" class="link">日付一覧</a>
       <a href="/users" name="link" class="link">ユーザー一覧</a>
-      <a class="dropdown-item" href="{{ route('logout') }}"onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-      {{ __('Logout') }}
-      </a>
+      <a class="dropdown-item" href="{{ route('logout') }}"onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Logout') }}</a>
       <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
       @csrf
       </form>
@@ -211,7 +208,5 @@ text-decoration: none;
   <div class="end">
     <h3 class="end_content">Atte,inc.</h3>
   </div>
-  
 </body>
-
 </html>

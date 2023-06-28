@@ -16,19 +16,10 @@ use Illuminate\Http\Request;
 class WorkController extends Controller
 {   
    public function view()
-   {
-      if(Auth::id()==null)
-      {
-         $message="ログインされていません";
-
-      return redirect('/login')->with(compact('message'));
-      }
-      else
-      {
+   { 
       $data =User::name();
       
       return view('start', ['data' => $data]);
-      }
    }
        
    public function start(WorkRequest $request)
@@ -63,7 +54,7 @@ class WorkController extends Controller
          $item = Work::worker()->latest()->first();
          
          return view('reststart',compact('item'));
-   } 
+      } 
    }
 
    public function endView()
@@ -76,21 +67,21 @@ class WorkController extends Controller
 
    public function  end(WorkRequest $request)
    {
-   if(Work::worker()->latest()->first()->work_end===null)
-   {
-      Work::worker()->update
-      ([
-      'work_end'=>now(),
-      ]);
+      if(Work::worker()->latest()->first()->work_end===null)
+      {
+         Work::worker()->update
+            ([
+               'work_end'=>now(),
+            ]);
 
-      return redirect('/attendance');
-   }
-   else
-   {
-      $message="退勤処理は既にされています。再度出勤する際はもう一度出勤処理を行ってください。";
+            return redirect('/attendance');
+      }
+      else
+      {
+         $message="退勤処理は既にされています。";
 
-      return redirect('/attendance')->with(compact('message'));
-   }
+         return redirect('/attendance')->with(compact('message'));
+      }
         
    } 
 
@@ -100,7 +91,6 @@ class WorkController extends Controller
       $who = Auth::id();
       $item = Work::where('user_id',$who)->first();
        
-        
       return view('reststart',['item' => $item]);
    } 
       
@@ -112,7 +102,7 @@ class WorkController extends Controller
       return view('index', ['data' => $data]);
 
    }
-// orderBy('user_id', 'asc')
+
    public function index()
    { 
        
@@ -121,28 +111,20 @@ class WorkController extends Controller
       $joinDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->get();
     
       // 今日のデータが存在しない場合、エラーへ遷移
-      if($joinDatas->isEmpty()){
+         if($joinDatas->isEmpty())
+         {
 
-         return view('error');
+            return view('error');
 
-      }
-      else
-      {
-         $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->paginate(5);
+         }
+         else
+         {
+            $viewDatas = Work::join('rests','rests.work_id','=','works.id')->join('users','works.user_id','=','users.id')->wheredate('work_start',$day)->paginate(5);
    
             return view('index',compact('viewDatas','day'));       
-      }
-
-         
-
-      
-          
+         }
    }
 
-   public function login()
-   {
-      return view('login');
-   }
 
    
    
@@ -253,6 +235,7 @@ class WorkController extends Controller
    {
       return view('samedayerror');
    }
+
    public function daysView()
    {
    // データがある日付をすべて取得

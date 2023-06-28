@@ -55,41 +55,35 @@
     }
 
     .pagination li{
-  display: inline-block;
- }
+      display: inline-block;
+    }
   </style>
 </head>
 <body>
-
   <div class="header">
     <h1 class="app_header">Atte</h1>
   <div>
   <div class="a">
    <p class="introduce">ユーザ一覧</p> 
   <div class="middle">
-  @foreach($users as $person)  
-  <form action="{{route('who')}}" method="POST">
-    <input type="hidden" value="{{$person->id}}"  name="id" >
-    @csrf
-  <p class="counter">{{$counter++}}</p>
-  @if($counter%4==0)
-    <button class="who__button" type="submit">{{$person->name}}</button><br />
-    </form>
-  @else
-    <button class="who__button" type="submit">{{$person->name}}</button>
-    </form>
-  @endif
-  @endforeach
+    @foreach($users as $person)  
+      <form action="{{route('who')}}" method="POST">
+        <input type="hidden" value="{{$person->id}}"  name="id" >
+        @csrf
+        <p class="counter">{{$counter++}}</p>
+        @if($counter%4==0)
+          <button class="who__button" type="submit">{{$person->name}}</button><br />
+      </form>
+        @else
+          <button class="who__button" type="submit">{{$person->name}}</button>
+      </form>
+        @endif
+    @endforeach
   </div>
   <div class="link">{{$users->links()}}</div>
   </div>
-  
-  
-  
   <div class="end">
     <h3 class="end_content">Atte,inc.</h3>
   </div>
-
 </body>
-
 </html>

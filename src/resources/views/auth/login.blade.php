@@ -9,6 +9,7 @@
             <div>
             <div class="card">
                 <div class="card-header">{{ __('ログイン') }}</div>
+                <p class="error">{{$message??''}}</p>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">

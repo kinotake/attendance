@@ -37,7 +37,9 @@
 
   .middle_top{
     padding-top: 30px;
-    display:flex
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content:center; 
   }
 
   .contents_hedders{
@@ -56,8 +58,9 @@
     width: 220px;
     margin-top: 22px;
   }
-  .contents{
+  .contents,.thisday{
     text-align: center;
+   
   }
   .content_name{
     height: 40px;
@@ -81,8 +84,8 @@
      color: red;
   }
 
- .day__button,.day{
-   display: inline-block;
+ .day__button{
+   display : block;
  }
 
  .day__button{
@@ -92,26 +95,86 @@
    width:30px;
    height:20px;
    border-width:1px;
-   margin:0 auto;
+   
  }
 
- .day{
-  margin:0 auto
+ .pagination li{
+  display: inline-block;
+ }
+
+ .pagination{
+  text-align: center;
  }
 
 
- 
+.content{
+  text-align: center;
+  height:40px;
+  margin-top : 15px;
+  font-size : 25px;
+  margin-left: -50px
+ }
 
+.contents{
+    width:100%;
+    display: inline-block; 
+    text-align: center;
+    border-bottom:solid 3px #dcdcdc;
+  }
+
+  .paginationWrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 38px;
+    margin-bottom: 40px;
+}
+
+.paginationWrap ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+.paginationWrap ul.pagination li {
+  display: inline;
+  margin-right: 4px;
+}
+
+.paginationWrap ul.pagination li a {
+    color: #2f3859;
+    padding: 8px 14px;
+    text-decoration: none;
+}
+
+.paginationWrap ul.pagination li a.active {
+    background-color: #4b90f6;
+    color: white;
+    width: 38px;
+    height: 38px;
+}
+
+.paginationWrap ul.pagination li a:hover:not(.active) {
+    background-color: #e1e7f0;
+}
+.link,.dropdown-item{
+color : black;
+text-decoration: none;
+}
   </style>
 </head>
 <body>
   <div class="header">
     <h1 class="app_header">Atte</h1>
     <div class="links">
-      <a href="/" name="link">ホーム</a>
-      <a href="/days" name="link">日付一覧</a>
-      <a href="/users" name="link">ユーザー一覧</a>
-        <a name="link">ログアウト（まだ）</a>
+      <a href="/" name="link" class="link">ホーム</a>
+      <a href="/days" name="link" class="link">日付一覧</a>
+      <a href="/users" name="link" class="link">ユーザー一覧</a>
+      <a class="dropdown-item" href="{{ route('logout') }}"onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+      {{ __('Logout') }}
+      </a>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+      @csrf
+      </form>
     </div>
   </div>
   <div class="middle">
@@ -121,30 +184,30 @@
         @csrf
         <button class="day__button" type="submit"><<</button>
       </form>
-      <p class="day">{{$day->format('Y-m-d')}}</p>
+      <div class="thisday">{{$day->format('Y-m-d')}}</div>
       <form action="{{route('tomorrow')}}" method="POST">
         <input type="hidden" value="{{$day}}"  name="day" >
         @csrf
         <button class="day__button" type="submit">>></button>
       </form>
     </div>
-  <div class="contents_hedders">
-    <div class="content_hedder">名前</div>
-    <div class="content_hedder">勤務開始</div>
-    <div class="content_hedder">勤務終了</div>
-    <div class="content_hedder">休憩時間</div>
-    <div class="content_hedder">勤務時間</div>
-  </div>
-  <div class="contents">
+    <div class="contents_hedders">
+      <div class="content_hedder">名前</div>
+      <div class="content_hedder">勤務開始</div>
+      <div class="content_hedder">勤務終了</div>
+      <div class="content_hedder">休憩時間</div>
+      <div class="content_hedder">勤務時間</div>
+    </div>
     <p class="error">{{$nodata??''}}</p>
     @if (@isset($viewDatas))
-      @foreach ($viewDatas->unique('user_id') as $viewData)
-        <div class="content">{{$viewData->sumrest()}}</div>
-      @endforeach
-    {{$viewDatas->links()}}
+    @foreach ($viewDatas->unique('user_id') as $viewData)
+    <div class="contents">
+      <div class="content">{{$viewData->sumrest()}}</div>
+    </div>
+    @endforeach
+    {{$viewDatas->links('pagination::default')}}
     @endif
-  </div>
-    
+  </div> 
   <div class="end">
     <h3 class="end_content">Atte,inc.</h3>
   </div>

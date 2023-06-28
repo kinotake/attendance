@@ -23,7 +23,7 @@
     }
 
     .who__button{
-    width:290px;
+    width:295px;
     height:90px;
     margin-right : 10px;
     margin-left : 10px;
@@ -53,9 +53,14 @@
     .link{
       text-align: center;
     }
+
+    .pagination li{
+  display: inline-block;
+ }
   </style>
 </head>
 <body>
+
   <div class="header">
     <h1 class="app_header">Atte</h1>
   <div>

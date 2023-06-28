@@ -37,7 +37,9 @@
 
   .middle_top{
     padding-top: 30px;
-    text-align: center;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content:center; 
   }
 
   .contents_hedders{
@@ -60,6 +62,7 @@
     width:100%;
     display: inline-block; 
     text-align: center;
+    border-bottom:solid 3px #dcdcdc;
   }
   .content_name{
     height: 40px;
@@ -104,23 +107,107 @@
  }
 
  .content{
-  justify-content: space-between;
+  text-align: center;
   height:40px;
   margin-top : 15px;
-  font-size : 19px;
+  font-size : 25px;
+  margin-left: -50px
  }
 
+ .paginationWrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 38px;
+    margin-bottom: 40px;
+}
+
+.paginationWrap ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+.paginationWrap ul.pagination li {
+  display: inline;
+  margin-right: 4px;
+}
+
+.paginationWrap ul.pagination li a {
+    color: #2f3859;
+    padding: 8px 14px;
+    text-decoration: none;
+}
+
+.paginationWrap ul.pagination li a.active {
+    background-color: #4b90f6;
+    color: white;
+    border-radius: 40px;
+    width: 38px;
+    height: 38px;
+}
+
+.paginationWrap ul.pagination li a:hover:not(.active) {
+    background-color: #e1e7f0;
+    border-radius: 40px;
+}
+
+.paginationWrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 38px;
+    margin-bottom: 40px;
+}
+
+.paginationWrap ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+.paginationWrap ul.pagination li {
+  display: inline;
+  margin-right: 4px;
+}
+
+.paginationWrap ul.pagination li a {
+    color: #2f3859;
+    padding: 8px 14px;
+    text-decoration: none;
+}
+
+.paginationWrap ul.pagination li a.active {
+    background-color: #4b90f6;
+    color: white;
+    width: 38px;
+    height: 38px;
+}
+
+.paginationWrap ul.pagination li a:hover:not(.active) {
+    background-color: #e1e7f0;
+}
+
+.link,.dropdown-item{
+color : black;
+text-decoration: none;
+}
   </style>
 </head>
 <body>
   <div class="header">
     <h1 class="app_header">Atte</h1>
     <div class="links">
-    <a href="/" name="link">ホーム</a>
-    <a href="/days" name="link">日付一覧</a>
-    <a href="/users" name="link">ユーザー一覧</a>
-    <a name="link">ログアウト（まだ）</a>
-    </div>
+    <a href="/" name="link" class="link">ホーム</a>
+    <a href="/days" name="link" class="link">日付一覧</a>
+    <a href="/users" name="link" class="link">ユーザー一覧</a>
+    <a class="dropdown-item" href="{{ route('logout') }}"
+    onclick="event.preventDefault();
+    document.getElementById('logout-form').submit();">
+    {{ __('Logout') }}
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+    @csrf
+    </form>
+</div>
   </div>
   <div class="middle">  
     <div class="middle_top">
@@ -138,14 +225,14 @@
     <div class="content_hedder">休憩時間</div>
     <div class="content_hedder">勤務時間</div>
     </div>
-    <div class="contents">
     @if (@isset($viewDatas))
     @foreach ($viewDatas->unique('user_id') as $viewData)
+    <div class="contents">
     <p class="content">{{$viewData->sumrest()}}</p>
-    @endforeach
-    {{$viewDatas->links()}}
-    @endif
     </div>
+    @endforeach
+    {{$viewDatas->links('pagination::default')}}
+    @endif
     </div>
     
   <div class="end">

@@ -17,10 +17,18 @@ class WorkController extends Controller
 {   
    public function view()
    {
+      if(Auth::id()==null)
+      {
+         $message="ログインされていません";
 
+      return redirect('/login')->with(compact('message'));
+      }
+      else
+      {
       $data =User::name();
       
       return view('start', ['data' => $data]);
+      }
    }
        
    public function start(WorkRequest $request)
